@@ -1,0 +1,1 @@
+./client $(ps | grep server | grep -v grep | cut -f 1 -d " ") $(cat ./test_files/ascii_50000.txt)
