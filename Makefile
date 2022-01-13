@@ -1,19 +1,20 @@
-S_SRCNAME	:= server.c receive_msg.c
-S_SRCDIR	:= ./srcs/server/
-S_SRCS		:= $(addprefix $(S_SRCDIR), $(S_SRCNAME))
-S_OBJS		:= $(S_SRCS:.c=.o)
+S_SRCSNAME	:= server.c receive_msg.c
+S_SRCSDIR	:= ./srcs/server
+S_SRCS		:= $(addprefix $(S_SRCSDIR)/, $(S_SRCSNAME))
 S_NAME		:= server
 
-C_SRCNAME	:= client.c send_msg.c
-C_SRCDIR	:= ./srcs/client/
-C_SRCS		:= $(addprefix $(C_SRCDIR), $(C_SRCNAME))
-C_OBJS		:= $(C_SRCS:.c=.o)
+C_SRCSNAME	:= client.c send_msg.c
+C_SRCSDIR	:= ./srcs/client
+C_SRCS		:= $(addprefix $(C_SRCSDIR)/, $(C_SRCSNAME))
 C_NAME		:= client
 
-LIBFTDIR	:= ./libft
-LIBFTNAME 	:= libft.a
-LIBFT		:= $(LIBFTDIR)/$(LIBFTNAME)
-LIBFTTARGET	:= all
+S_OBJSDIR	:= ./objs/server
+S_OBJSNAME	:= $(S_SRCSNAME:.c=.o)
+S_OBJS		:= $(addprefix $(S_OBJSDIR)/, $(S_OBJSNAME))
+
+C_OBJSDIR	:= ./objs/client
+C_OBJSNAME	:= $(C_SRCSNAME:.c=.o)
+C_OBJS		:= $(addprefix $(C_OBJSDIR)/, $(C_OBJSNAME))
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
@@ -21,10 +22,16 @@ RM			:= rm -rf
 INCLUDE		:= -I./include
 NAME		:= minitalk
 
-all		:	$(NAME)
+LIBFTDIR	:= ./libft
+LIBFT		:= $(LIBFTDIR)/libft.a
+LIBFTTARGET	:= all
 
-.c.o	:
-			$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
+LIBINCLUDE  := -I${LIBFTDIR}
+LIBDIR      := -L${LIBFTDIR}
+LIBLINK     := -lft
+LIB			:= $(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
+
+all		:	$(NAME)
 
 $(LIBFT):
 			make $(LIBFTTARGET) -C $(LIBFTDIR)
@@ -32,10 +39,18 @@ $(LIBFT):
 $(NAME)	:	$(S_NAME) $(C_NAME)
 
 $(S_NAME):	$(S_OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) $(INCLUDE) $(S_OBJS) $(LIBFT) -o $(S_NAME)
+			$(CC) $(CFLAGS) $(INCLUDE) $(S_OBJS) $(LIB) -o $(S_NAME)
 
 $(C_NAME):	$(C_OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) $(INCLUDE) $(C_OBJS) $(LIBFT) -o $(C_NAME)
+			$(CC) $(CFLAGS) $(INCLUDE) $(C_OBJS) $(LIB) -o $(C_NAME)
+
+$(S_OBJSDIR)/%.o  :   $(S_SRCSDIR)/%.c
+			@mkdir -p $(dir $@)
+			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
+
+$(C_OBJSDIR)/%.o  :   $(C_SRCSDIR)/%.c
+			@mkdir -p $(dir $@)
+			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
 
 clean	:
 			$(RM) $(S_OBJS) $(C_OBJS)
@@ -47,12 +62,13 @@ fclean	: 	clean
 
 re		:	fclean all
 
-debug	: CFLAGS += -g
-debug	: LIBFTTARGET := debug
-debug	: re
+address	:	CFLAGS		+= -g -fsanitize=address
+address	:	LIBFTTARGET	:= address
+address	:	re
 
-address	: CFLAGS += -g -fsanitize=address
-address	: LIBFTTARGET := address
-address	: re
+leak	:	CC			:= /usr/local/opt/llvm/bin/clang
+leak	:	CFLAGS		+= -g -fsanitize=leak
+leak	:	LIBFTTARGET	:= leak
+leak	:	re
 
-.PHONY:	all clean fclean re debug address
+.PHONY: all clean fclean re address leak

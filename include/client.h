@@ -6,14 +6,14 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:53:18 by mkamei            #+#    #+#             */
-/*   Updated: 2021/06/10 11:39:42 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/01/12 12:10:52 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_H
 # define CLIENT_H
 
-# include "../libft/libft.h"
+# include "libft.h"
 # include <signal.h>
 
 # define PID_MIN 100

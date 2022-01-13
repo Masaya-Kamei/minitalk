@@ -2,3 +2,6 @@
 *.bak
 *.a
 .DS_Store
+client
+server
+objs
