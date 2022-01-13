@@ -1,20 +1,15 @@
-S_SRCSNAME	:= server.c receive_msg.c
-S_SRCSDIR	:= ./srcs/server
-S_SRCS		:= $(addprefix $(S_SRCSDIR)/, $(S_SRCSNAME))
+SRCSDIR		:= ./srcs
+OBJSDIR		:= ./objs
+
+S_SRCSNAME	:= server.c
+S_SRCS		:= $(addprefix $(SRCSDIR)/, $(S_SRCSNAME))
+S_OBJS		:= $(addprefix $(OBJSDIR)/, $(S_SRCSNAME:.c=.o))
 S_NAME		:= server
 
-C_SRCSNAME	:= client.c send_msg.c
-C_SRCSDIR	:= ./srcs/client
-C_SRCS		:= $(addprefix $(C_SRCSDIR)/, $(C_SRCSNAME))
+C_SRCSNAME	:= client.c
+C_SRCS		:= $(addprefix $(SRCSDIR)/, $(C_SRCSNAME))
+C_OBJS		:= $(addprefix $(OBJSDIR)/, $(C_SRCSNAME:.c=.o))
 C_NAME		:= client
-
-S_OBJSDIR	:= ./objs/server
-S_OBJSNAME	:= $(S_SRCSNAME:.c=.o)
-S_OBJS		:= $(addprefix $(S_OBJSDIR)/, $(S_OBJSNAME))
-
-C_OBJSDIR	:= ./objs/client
-C_OBJSNAME	:= $(C_SRCSNAME:.c=.o)
-C_OBJS		:= $(addprefix $(C_OBJSDIR)/, $(C_OBJSNAME))
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
@@ -44,11 +39,7 @@ $(S_NAME):	$(S_OBJS) $(LIBFT)
 $(C_NAME):	$(C_OBJS) $(LIBFT)
 			$(CC) $(CFLAGS) $(INCLUDE) $(C_OBJS) $(LIB) -o $(C_NAME)
 
-$(S_OBJSDIR)/%.o  :   $(S_SRCSDIR)/%.c
-			@mkdir -p $(dir $@)
-			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
-
-$(C_OBJSDIR)/%.o  :   $(C_SRCSDIR)/%.c
+$(OBJSDIR)/%.o  :   $(SRCSDIR)/%.c
 			@mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
 

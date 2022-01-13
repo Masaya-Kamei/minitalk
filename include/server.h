@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/06 18:03:25 by mkamei            #+#    #+#             */
-/*   Updated: 2022/01/12 12:11:00 by mkamei           ###   ########.fr       */
+/*   Created: 2022/01/13 15:35:19 by mkamei            #+#    #+#             */
+/*   Updated: 2022/01/13 16:27:29 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,12 @@
 # include "libft.h"
 # include <signal.h>
 
-# define PID_MIN 100
-# define PID_MAX 99998
-# define ASCII_EOT 4
-# define BUFFER_SIZE 100
-# define SERVER 0
-# define CLIENT 1
-# define SUCCESS 0
-# define ERR_SIGEMPTYSET 1
-# define ERR_SIGACTION 2
-# define ERR_ARGUMENTS 3
-# define ERR_CLIENT_PID 4
-# define ERR_KILL 5
-# define ERR_MALLOC 6
-# define END_SERVER 7
-# define END_COMMUNICATION 8
+# define EMSG_SIGEMPTYSET "Sigemptyset Error"
+# define EMSG_SIGACTION "Sigaction Error"
+# define EMSG_KILL "Kill Error"
+# define EMSG_ARGUMENTS "Arguments Error"
 
-void	write_msg_and_exit(int num);
-int		free_and_return(char *str, int status);
-void	write_pid(int server_or_client, pid_t pid);
-void	loop_communication(void);
-
-int		g_received_signal;
+static int	g_received_signal = 0;
+static int	g_client_pid = 0;
 
 #endif

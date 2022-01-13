@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/05 17:53:18 by mkamei            #+#    #+#             */
-/*   Updated: 2022/01/12 12:10:52 by mkamei           ###   ########.fr       */
+/*   Created: 2022/01/13 17:32:47 by mkamei            #+#    #+#             */
+/*   Updated: 2022/01/13 17:32:50 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,14 @@
 
 # define PID_MIN 100
 # define PID_MAX 99998
-# define PID_MAX_DIGITS_NUM 5
-# define ASCII_EOT 4
-# define SUCCESS 0
-# define ERR_SIGEMPTYSET 1
-# define ERR_SIGACTION 2
-# define ERR_ARGUMENTS 3
-# define ERR_SERVER_PID 4
-# define ERR_KILL 5
-# define ERR_COMMUNICATION 6
 
-void	write_msg_and_exit(int num);
-void	communicate_with_server(pid_t server_pid, char *str);
+# define EMSG_SIGEMPTYSET "Sigemptyset Error"
+# define EMSG_SIGACTION "Sigaction Error"
+# define EMSG_KILL "Kill Error"
+# define EMSG_ARGUMENTS "Arguments Error"
+# define EMSG_SERVER_PID "Invalid Server PID"
+# define EMSG_COMMUNICATION "Communication Error"
 
-int		g_received_signal;
+static int	g_received_signal = 0;
 
 #endif
