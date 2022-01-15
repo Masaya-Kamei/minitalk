@@ -1,5 +1,6 @@
-SRCSDIR		:= ./srcs
-OBJSDIR		:= ./objs
+SRCSDIR		:= srcs
+OBJSDIR		:= objs
+INCLUDE		:= -I./includes
 
 S_SRCSNAME	:= server.c
 S_SRCS		:= $(addprefix $(SRCSDIR)/, $(S_SRCSNAME))
@@ -11,23 +12,23 @@ C_SRCS		:= $(addprefix $(SRCSDIR)/, $(C_SRCSNAME))
 C_OBJS		:= $(addprefix $(OBJSDIR)/, $(C_SRCSNAME:.c=.o))
 C_NAME		:= client
 
-BONUS_SRCSDIR	:= ./bonus
-BONUS_OBJSDIR	:= ./bonus/objs
+BONUS_SRCSDIR	:= $(addprefix ./bonus/, $(SRCSDIR))
+BONUS_OBJSDIR	:= $(addprefix ./bonus/, $(OBJSDIR))
+BONUS_INCLUDE	:= $(subst includes,bonus/includes,$(INCLUDE))
 
-BONUS_S_SRCSNAME:= server_bonus.c
+BONUS_S_SRCSNAME:= $(subst .c,_bonus.c,$(S_SRCSNAME))
 BONUS_S_SRCS	:= $(addprefix $(BONUS_SRCSDIR)/, $(BONUS_S_SRCSNAME))
 BONUS_S_OBJS	:= $(addprefix $(BONUS_OBJSDIR)/, $(BONUS_S_SRCSNAME:.c=.o))
-BONUS_S_NAME	:= server_bonus
+BONUS_S_NAME	:= $(addprefix ./bonus/, $(S_NAME))
 
-BONUS_C_SRCSNAME:= client_bonus.c
+BONUS_C_SRCSNAME:= $(subst .c,_bonus.c,$(C_SRCSNAME))
 BONUS_C_SRCS	:= $(addprefix $(BONUS_SRCSDIR)/, $(BONUS_C_SRCSNAME))
 BONUS_C_OBJS	:= $(addprefix $(BONUS_OBJSDIR)/, $(BONUS_C_SRCSNAME:.c=.o))
-BONUS_C_NAME	:= client_bonus
+BONUS_C_NAME	:= $(addprefix ./bonus/, $(C_NAME))
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 RM			:= rm -rf
-INCLUDE		:= -I./includes
 NAME		:= minitalk
 
 LIBFTDIR	:= ./libft
@@ -56,17 +57,17 @@ $(OBJSDIR)/%.o  :   $(SRCSDIR)/%.c
 			@mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
 
-bonus	:	$(BONUS_S_NAME) $(BONUS_C_NAME);
+bonus	:	$(BONUS_S_NAME) $(BONUS_C_NAME)
 
 $(BONUS_S_NAME):	$(BONUS_S_OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) $(INCLUDE) $(BONUS_S_OBJS) $(LIB) -o $(BONUS_S_NAME)
+			$(CC) $(CFLAGS) $(BONUS_INCLUDE) $(BONUS_S_OBJS) $(LIB) -o $(BONUS_S_NAME)
 
 $(BONUS_C_NAME):	$(BONUS_C_OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) $(INCLUDE) $(BONUS_C_OBJS) $(LIB) -o $(BONUS_C_NAME)
+			$(CC) $(CFLAGS) $(BONUS_INCLUDE) $(BONUS_C_OBJS) $(LIB) -o $(BONUS_C_NAME)
 
 $(BONUS_OBJSDIR)/%.o  :   $(BONUS_SRCSDIR)/%.c
 			@mkdir -p $(dir $@)
-			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
+			$(CC) $(CFLAGS) $(BONUS_INCLUDE) $(LIBINCLUDE) -o $@ -c $<
 
 clean	:
 			$(RM) $(S_OBJS) $(C_OBJS) $(BONUS_S_OBJS) $(BONUS_C_OBJS)
