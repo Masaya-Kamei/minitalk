@@ -19,12 +19,12 @@ BONUS_INCLUDE	:= $(subst includes,bonus/includes,$(INCLUDE))
 BONUS_S_SRCSNAME:= $(subst .c,_bonus.c,$(S_SRCSNAME))
 BONUS_S_SRCS	:= $(addprefix $(BONUS_SRCSDIR)/, $(BONUS_S_SRCSNAME))
 BONUS_S_OBJS	:= $(addprefix $(BONUS_OBJSDIR)/, $(BONUS_S_SRCSNAME:.c=.o))
-BONUS_S_NAME	:= $(addprefix ./bonus/, $(S_NAME))
+BONUS_S_NAME	:= $(addsuffix _bonus, $(S_NAME))
 
 BONUS_C_SRCSNAME:= $(subst .c,_bonus.c,$(C_SRCSNAME))
 BONUS_C_SRCS	:= $(addprefix $(BONUS_SRCSDIR)/, $(BONUS_C_SRCSNAME))
 BONUS_C_OBJS	:= $(addprefix $(BONUS_OBJSDIR)/, $(BONUS_C_SRCSNAME:.c=.o))
-BONUS_C_NAME	:= $(addprefix ./bonus/, $(C_NAME))
+BONUS_C_NAME	:= $(addsuffix _bonus, $(C_NAME))
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
