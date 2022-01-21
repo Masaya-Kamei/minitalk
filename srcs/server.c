@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 13:21:05 by mkamei            #+#    #+#             */
-/*   Updated: 2022/01/13 17:06:53 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/01/21 11:42:20 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ static char	receive_one_byte(void)
 			usleep(10);
 		signal = g_received_signal;
 		g_received_signal = 0;
+		if (kill(g_client_pid, signal) == -1)
+			exit_with_errout(EMSG_KILL);
 		c <<= 1;
 		if (signal == SIGUSR2)
 			c++;
 		bit_shift_count++;
-		if (kill(g_client_pid, signal) == -1)
-			exit_with_errout(EMSG_KILL);
 	}
 	return (c);
 }
